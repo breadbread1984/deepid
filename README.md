@@ -21,7 +21,8 @@ make -j9
 
 ### Training Feature Extractor
 
-You can skip the training if you just want to detect facial landmarkers with this project because all pretrained deepid caffemodel files are given in model values directory
+You can skip the training if you just want to do face recognition with this project because all pretrained deepid caffemodel files are given in model values directory
+
 1. request [CASIA-webface](www.cbsr.ia.ac.cn/english/CASIA-WebFace-Database.html) dataset.
 
 2. crop patches from datasets as described in the paper
@@ -69,7 +70,7 @@ in root directory
 
 train with caffe on the generated lmdb of deepid feature. My deepid code can only achieve 70% accuracy, trained and tested on webface.
 
-### Training Face Recognizer on dimension reduced (150d) feature vectores
+### Training Face Recognizer on dimension reduced (150d) feature vectors
 
 1. calculate principal vectors of deepid features and transform them into principal component subspaces
 
