@@ -1,0 +1,77 @@
+name: "face_recognizer"
+input: "data"
+input_shape {
+	dim: 1
+	dim: 19200
+	dim: 1
+	dim: 1
+}
+layer {
+	name: "fc"
+	type: "InnerProduct"
+	bottom: "data"
+	top: "fc"
+	param {
+		name: "fc_w"
+		lr_mult: 1
+		decay_mult: 1
+	}
+	param {
+		name: "fc_b"
+		lr_mult: 2
+		decay_mult: 0
+	}
+	inner_product_param {
+		num_output: 150
+		weight_filler {
+			type: "gaussian"
+			std: 0.005
+		}
+		bias_filler {
+			type: "constant"
+			value: 0.1
+		}
+	}
+}
+layer {
+	name: "relu"
+	type: "ReLU"
+	bottom: "fc"
+	top: "relu"
+}
+layer {
+	name: "drop"
+	type: "Dropout"
+	bottom: "relu"
+	top: "drop"
+	dropout_param {
+		dropout_ratio: 0.5
+	}
+}
+layer {
+	name: "id"
+	type: "InnerProduct"
+	bottom: "drop"
+	top: "id"
+	param {
+		name: "id_w"
+		lr_mult: 1
+		decay_mult: 1
+	}
+	param {
+		name: "id_b"
+		lr_mult: 2
+		decay_mult: 0
+	}
+	inner_product_param {
+		num_output: 10575
+		weight_filler {
+			type: "gaussian"
+			std: 0.01
+		}
+		bias_filler {
+			type: "constant"
+			value: 0
+		}
+	}
+}

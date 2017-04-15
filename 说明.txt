@@ -1,0 +1,24 @@
+使用说明
+一、训练deepid特征提取器
+1）将要训练的数据集按照每个人的人脸图片放到一个文件夹，然后将所有文件夹放入一个汇总文件夹中。
+2）使用generate_training_samples将数据集图片剪切成deepid训练集要求的patch并输出
+./generate_training_samples -i <Webface文件夹> -o <输出的patch文件夹>
+3）使用convert将patch转换成lmdb数据库格式
+./convert -i <patch文件夹> -o <lmdb数据库输出路径>
+4）分别进入60个lmdb子文件夹调用caffe进行训练
+caffe train -solver deepid_solver.prototxt -gpu all
+5）用move_training_results将所有训练完毕的caffemodel文件汇总到指定文件夹
+./move_training_results -i <lmdb数据库路径> -o model_values
+二、训练deepid人脸识别
+6）用generate_training_samples2将要训练的人脸训练集的deepid特征进行提取，生成lmdb数据库
+./generate_training_samples2 -i <Webface文件夹> -o <输出lmdb数据库路径>
+7）用caffe训练人脸识别，并手动将训练好的caffemodel文件移动到model_values文件夹
+8）调用roc程序，在lfw上计算eer。
+9）调用main程序测试人脸识别效果。
+用如下命令训练
+./main -m train -i 测试人脸
+./main -m test -p 训练参数.dat
+三、对deepid特征进行主元分析并降维
+9）用transform对lmdb数据进行处理
+./transform -i <lmdb数据库路径> -o <输出降维数据库>
+
